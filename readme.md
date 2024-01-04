@@ -94,3 +94,11 @@ this language also has:
     this simply writes `s` to the console.
     
     if `s` doesn't exists, it writes `1` to the console.
+
+9. `$[n]`
+
+    this opens another `.pf` file, reads it and executes everything inside of it.
+
+    **you cannot have a `$` instruction in a file you import with `$`.**
+
+    **`n` is required. this is the name of the file. (or a path, if you prefer)**
