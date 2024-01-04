@@ -62,6 +62,7 @@ this language also has:
     if `n` is present (and its not 1), it will insert a `\n` after every `n`th byte.
 
 5. `^{n}`
+
     this writes 1 byte into memory.
 
     `n` is a "byte", so it can only be **between 0 and 255**.
