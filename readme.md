@@ -102,3 +102,7 @@ this language also has:
     **you cannot have a `$` instruction in a file you import with `$`.**
 
     **`n` is required. this is the name of the file. (or a path, if you prefer)**
+
+-----
+
+note: the `$` sign also means the iteration count in a loop. (ex. if the code in a loop has ran 23 times, `$` will be 23)
