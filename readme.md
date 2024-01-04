@@ -1,6 +1,11 @@
 # pythonf--k
 a "language" which makes zero sense (literally)
 
+## requirements
+- python 3.x
+- at most 128kB of disk space
+  (though you can change the "memory" size easily so this depends on that)
+
 ## basics
 this "language" is inspired from brainf--k, another "language" which uses about 7 characters.
 
@@ -9,23 +14,24 @@ pythonf--k is supposed to be an "easier" version, but it became different from b
 this language also has:
 - a pointer
 - **32 768 bytes** of "memory" *(wow thats a lot)*
-- instructions
+- instructions *(so unique)*
 
 ## few details
 - every instruction is executed in python (!)
 - the base interpreter is in python (wow)
 - every instruction is **one** special character
+- **empty lines are ignored**
 
 ## what are the characters, and what do they do?
 
 ### legend:
-- `[a]` = required;
+- `[a]` = **required**;
 - `{n}` = optional;
-- `|x|` = ignored;
+- `|x|` = *ignored*;
 
-0. `*`
+0. `*{c}`
 
-    this is a comment. 1 line can either be code, or a comment.
+    this is a comment. **comments must be on separate lines.**
 
 1. `>{n}` and `<{n}`
 
@@ -41,19 +47,19 @@ this language also has:
     doesn't work with other names), and inserts it into the memory
     at the current position of the pointer.
     
-    `x` is ignored.
+    *`x` is ignored.*
 
 3. `\|x|`
 
     this does the same as `/`, except it loads the `output` file.
 
-    `x` is ignored.
+    *`x` is ignored.*
 
 4. `.{n}`
 
     this writes the "memory" into the `output` file. (if it doesn't exists, it'll be created)
 
-    if a parameter is present (and its not 1), it'll insert a `\n` after `n` bytes.
+    if `n` is present (and its not 1), it will insert a `\n` after every `n`th byte.
 
 5. `^{n}`
     this writes 1 byte into memory.
@@ -73,14 +79,12 @@ this language also has:
     it can have infinite instructions, but they must be separated by `;`. it will do the instructions `n` times.
 
     trailing semicolons are allowed, but **not** recommended.
-    
-    **`a` and `n` are required.**
 
+    **`a` and `n` are required.**
 
     example of a loop:
     ```
     * write a capital A 128 times
-
     ~(^65;>):128
     ```
 
