@@ -2,7 +2,7 @@
 a "language" which makes zero sense (literally)
 
 ## requirements
-- python 3.x
+- python 2.7 or newer
 - at most 128kB of disk space
   (though you can change the "memory" size easily so this depends on that)
 
@@ -93,3 +93,28 @@ this language also has:
     this simply writes `s` to the console.
     
     if `s` doesn't exists, it writes `1` to the console.
+
+9. `$[n]`
+
+    this opens another `.pf` file, reads it and executes everything inside of it.
+
+    **`IMPORTANT:` you cannot have a `$` instruction in a file you import with `$`.**
+
+    **`n` is required. this is the path of the other `.pf` file.**
+
+10. `!|x|`
+
+    this clears the "memory".
+
+    *`x` is ignored.*
+
+-----
+
+note: the `$` sign also means the iteration count in a loop. (ex. if the code in a loop has ran 23 times, `$` will be 23)
+
+## changelog
+- v1.1: fixed a few bugs, added support for python 2.7 and other 3.x versions
+
+    (3.0 ~ 3.5 specifically since f-strings were introduced in 3.6)
+
+- v1.0: **initial release**

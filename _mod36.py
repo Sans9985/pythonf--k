@@ -37,33 +37,32 @@ class Instruction:
         """Return the Python replica of the instruction."""
         out: str = ""
 
-        if self.instruction == ">": out += f"v.pointer += {self.param}"
-        elif self.instruction == "<": out += f"v.pointer -= {self.param}"
-        elif self.instruction == "_": out += f"print('{self.param}')"
+        if self.instruction == ">": out += "v.pointer += " + str(self.param)
+        elif self.instruction == "<": out += "v.pointer -= " + str(self.param)
+        elif self.instruction == ";": out += "print '" + str(self.param) + "'"
         elif self.instruction == "!": out += "v.arr = bytearray(v.size)"
-        elif self.instruction == "^": out += f"v.arr[v.pointer] = {self.param}"
-        elif self.instruction == ".": out += f"write({self.param}, v.arr)"
-        elif self.instruction == ",": out += f"v.pointer = {self.param}"
+        elif self.instruction == "^": out += "v.arr[v.pointer] = " + str(self.param)
+        elif self.instruction == ".": out += "write(" + str(self.param) + ", v.arr)"
+        elif self.instruction == ",": out += "v.pointer = " + str(self.param)
 
-        elif self.instruction == "/": out += f"""with open('input', 'rb') as f: data = f.read()
-{" " * mv.ind}if len(data) != 0:
-{" " * mv.ind}    for byte in data:
-{" " * mv.ind}        v.arr[v.pointer] = byte
-{" " * mv.ind}        v.pointer += 1"""
+        elif self.instruction == "/": out += \
+            "with open('./input', 'r') as f: data = f.read()\n" + ' ' * mv.ind + \
+            "if len(data) != 0:\n" + ' ' * mv.ind + \
+            "    for byte in data:\n" + ' ' * mv.ind + \
+            "        v.arr[v.pointer] = byte\n" + ' ' * mv.ind + \
+            "        v.pointer += 1"
             
-        elif self.instruction == "\\": out += f"""_ = v.pointer
-v.pointer = 0
-with open('output', 'rb') as f: data = f.read()
-{" " * mv.ind}for byte in data:
-{" " * mv.ind}    v.arr[v.pointer] = byte
-{" " * mv.ind}    v.pointer += 1"""
+        elif self.instruction == "\\": out += \
+            "_ = v.pointer\nv.pointer = 0\nwith open('./output', 'rb') as f: data = f.read()\n" + ' ' * mv.ind + \
+            "for byte in data:\n" + ' ' * mv.ind + \
+            "    v.arr[v.pointer] = byte\n" + ' ' * mv.ind + \
+            "    v.pointer += 1\nv.pointer = _"
 
         elif self.instruction == "~":
             mv.ind = 4
 
             m = self.param.split(":")
-            out += f"""for i in range({m[1]}): 
-{" " * mv.ind}"""
+            out += "for i in range(" + m[1] + "):\n" + " " * mv.ind
 
             self.param = m[0]
             b = self.param.split("(")[1].strip(")").split(";")
@@ -73,7 +72,7 @@ with open('output', 'rb') as f: data = f.read()
 
             for inst in b:
                 inst = Instruction(inst)
-                out += f"{inst.__py__()}\n{' ' * mv.ind}"
+                out += inst.__py__() + "\n" + ' ' * mv.ind
 
                 if inst.param == "$":
                     out = out.replace("'$'", "i")

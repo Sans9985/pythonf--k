@@ -41,6 +41,7 @@ class Instruction:
             case ">": out += f"v.pointer += {self.param}"
             case "<": out += f"v.pointer -= {self.param}"
             case "_": out += f"print('{self.param}')"
+            case "!": out += "v.arr = bytearray(v.size)"
             case "^": out += f"v.arr[v.pointer] = {self.param}"
             case ".": out += f"write({self.param}, v.arr)"
             case ",": out += f"v.pointer = {self.param}"
@@ -51,7 +52,9 @@ class Instruction:
 {" " * mv.ind}        v.arr[v.pointer] = byte
 {" " * mv.ind}        v.pointer += 1"""
 
-            case "\\": out += f"""with open('output', 'rb') as f: data = f.read()
+            case "\\": out += f"""_ = v.pointer
+v.pointer = 0
+with open('output', 'rb') as f: data = f.read()
 {" " * mv.ind}for byte in data:
 {" " * mv.ind}    v.arr[v.pointer] = byte
 {" " * mv.ind}    v.pointer += 1"""

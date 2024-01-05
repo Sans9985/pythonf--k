@@ -1,24 +1,19 @@
+# NOTE: only use this with python 2.7!
+
 from sys import version_info, argv
 
-if version_info > (3, 10):
-    print("Using 3.10+ version")
-    from _mod310 import Instruction, write
-elif version_info > (3, 6):
-    print("Using 3.7+ module")
-    from _mod39 import Instruction, write
-elif version_info <= (3, 0):
-    print("Using 3.0+ module")
-    from _mod36 import Instruction, write
+if version_info >= (2, 7):
+    from _mod27 import Instruction, write
 else:
-    exit("Please use the version created for Python 2.7.")
+    print "Version " + ".".join(map(str, version_info[:3])) + " is not compatible with this script. Use version 2.7 or later."
+    exit()
 
 class v:
-    size: int = 32768
-    arr: bytearray = bytearray(size)
-    pointer: int = 0
+    arr = bytearray(32768)
+    pointer = 0
 
-def load(name: str, debug: bool = False) -> list[Instruction]:
-    x: list[Instruction] = []
+def load(name, debug = False):
+    x = []
     
     with open(name) as f:
         file = f.read()
@@ -28,7 +23,9 @@ def load(name: str, debug: bool = False) -> list[Instruction]:
     i = 0
     while i < len(file):
         line = file[i]
-        if debug: print(f"{i+1:>3} {line}")
+        if debug:
+            s = str(i+1).format(">3") + " " + line
+            print s
 
         if line.startswith("*") or line == "":
             del file[i]
@@ -36,13 +33,13 @@ def load(name: str, debug: bool = False) -> list[Instruction]:
 
         if line.startswith("$"):
             try:
-                y = load(f"./{line[1:]}.pf")
+                y = load("./" + line[1:] + ".pf")
 
                 for l in y:
                     x.append(l)
 
             except FileNotFoundError:
-                print(f"Script '{line[1:]}.pf' not found; the instruction on line {i+1} is skipped.")
+                print("Script '" + line[1:] + ".pf' not found; the instruction on line " + str(i + 1) + " is skipped.")
 
             i += 1
             continue
@@ -52,13 +49,15 @@ def load(name: str, debug: bool = False) -> list[Instruction]:
 
     return x
 
-def do(lines: list[Instruction]) -> None:
-    string: list[str] = []
+def do(lines):
+    string = []
 
     for l in lines:
         string.append(l.__py__())
 
     for inst in string:
+        print inst
+
         exec(inst)
 
         if v.pointer < 0:
@@ -67,11 +66,11 @@ def do(lines: list[Instruction]) -> None:
         if v.pointer > len(v.arr) - 1:
             v.pointer -= len(v.arr)
 
-def main(file: str, debug: bool = False):
+def main(file, debug):
     if debug in ("-1", "1", "true", "True", "yes", "Yes", "y", "Y", "t", "T"): debug = True
     else: debug = False
 
-    x: list[Instruction] = load(f"./{file}", debug)
+    x = load("./" + file, debug)
 
     do(x)
 
@@ -85,7 +84,7 @@ if __name__ == '__main__':
         main(input("Please enter your file's name: "))
     else:
         raise TypeError(
-            f"Too many arguments. (expected at most 2, got {len(argv) - 1})"
+            "Too many arguments. (expected at most 2, got " + str(len(argv) - 1)
         )
 else:
     raise NameError("Cannot import file. Launch file directly.")
